@@ -3,6 +3,7 @@ package main
 import "fmt"
 import "net/http"
 import "strings"
+import "errors"
 
 type Webhook struct {
     url string;
@@ -32,7 +33,25 @@ func main() {
     }
     registerWebhook(activeWebhooks, "test", webhook2)
 
-    sendWebhook(webhook, "testttt")
+    err := triggerWebhook(activeWebhooks, "test", "this is a test")
+    if err != nil {
+        fmt.Println(err)
+    }
+}
+
+func triggerWebhook(registry Registry, eventId string, body string) (error) {
+
+    eventWebhooks, ok := registry[eventId]
+    if (ok) {
+        for _, hook := range eventWebhooks {
+            fmt.Println(hook)
+            sendWebhook(hook, body)
+        }
+        return nil
+    } else {
+        //error: no webhooks are registered at this id
+        return errors.New("no webhooks are registered for the eventId " + eventId)
+    }
 }
 
 
