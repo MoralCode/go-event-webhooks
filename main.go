@@ -9,12 +9,28 @@ type Webhook struct {
     httpMethod string;
 }
 
+type Registry map[string][]Webhook
+
+var activeWebhooks Registry
+
+
 func main() {
+
+    /* create a map*/
+    activeWebhooks = make(Registry)
+
     // fmt.Println(sayHi("Marco"))
     webhook := Webhook{
         "https://webhook.site/57663b0a-12b8-4f6d-a875-c38d30803561",
         "POST",
     }
+    registerWebhook(activeWebhooks, "test", webhook)
+
+    webhook2 := Webhook{
+        "https://webhook.site/57663b0a-12b8-4f6d-a875-c38d30803561",
+        "GET",
+    }
+    registerWebhook(activeWebhooks, "test", webhook2)
 
     sendWebhook(webhook, "testttt")
 }
@@ -38,4 +54,17 @@ func sendWebhook(webhook Webhook, body string) {
         fmt.Println("Error")
     }
     // http.NewRequest("POST", url, strings.NewReader(form.Encode()))
+}
+
+func registerWebhook(registry Registry, eventId string, webhook Webhook) {
+    values, ok := registry[eventId]   
+   /* if ok is true, entry is present otherwise entry is absent*/
+   if (ok) {
+        registry[eventId] = append(values, webhook)
+   } else {
+        // before the loop
+        output := []Webhook{}
+        output = append(output, webhook)
+        registry[eventId] = output
+   }
 }
