@@ -46,12 +46,12 @@ func sendWebhook(webhook Webhook, body string) {
     req, err := http.NewRequest(webhook.httpMethod,webhook.url, strings.NewReader(body))//"application/json",
     if err != nil {
         // handle error
-        fmt.Println("Error")
+        fmt.Println(err)
     }
-    _, err := client.Do(req)
+    _, err = client.Do(req)
     if err != nil {
         // handle error
-        fmt.Println("Error")
+        fmt.Println(err)
     }
     // http.NewRequest("POST", url, strings.NewReader(form.Encode()))
 }
