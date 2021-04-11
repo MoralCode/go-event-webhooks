@@ -9,7 +9,6 @@ type Envelope struct {
 }
 
 func main() {
-    // fmt.Println(sayHi("Marco"))
     resp, err := http.Get("https://webhook.site/57663b0a-12b8-4f6d-a875-c38d30803561")
     if err != nil {
         // handle error
@@ -22,8 +21,4 @@ func main() {
         fmt.Println("Error")
     }
     fmt.Println(body)
-}
-
-func sayHi(person string) string {
-    return fmt.Sprintf("Hi %s", person)
 }
