@@ -21,9 +21,18 @@ func main() {
 
 
 func sendWebhook(webhook Webhook, body string) {
+    client := &http.Client{
+        // CheckRedirect: redirectPolicyFunc,
+    }
+
 
     // https://golang.org/pkg/net/http/#Client.Post
-    _, err := http.Post(webhook.url,  "application/json", strings.NewReader(body))
+    req, err := http.NewRequest(webhook.httpMethod,webhook.url, strings.NewReader(body))//"application/json",
+    if err != nil {
+        // handle error
+        fmt.Println("Error")
+    }
+    _, err := client.Do(req)
     if err != nil {
         // handle error
         fmt.Println("Error")
