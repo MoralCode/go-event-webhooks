@@ -33,7 +33,17 @@ The go-event-webhooks module allows apps to easily create "events" identified by
 
 ## TODO
 - [ ] write unit tests
-- [ ] find a way 
+- [ ] find a way to persist the user's webhook settings (i.e. the registry) in a way thats compatible with how go apps are written
+  - [ ] possibly persist to file
+  - [ ] database
+  - [ ] global variable?
 - [ ] Support custom headers
 - [ ] support custom cookies
-- [ ] add easy setup methods to handle sending webhooks in common formats like discord and github
+- [ ] support signed requests: https://github.com/spatie/laravel-webhook-server#how-signing-requests-works
+- [ ] retrying calls and backoff strategies.
+- [ ] add easy setup methods to handle sending webhooks in common formats
+  - [ ] discord
+  - [ ] github
+  - [ ] Zapier
+  - [ ] IFTTT?
+  - [ ] 
