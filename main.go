@@ -79,7 +79,7 @@ func registerWebhook(registry Registry, eventId string, webhook Webhook) {
     values, ok := registry[eventId]   
    /* if ok is true, entry is present otherwise entry is absent*/
    if (ok) {
-       if (webhook != Webhook{}) {
+       if (webhook != Webhook{} && findIndexInList(values, webhook) == -1) {
             registry[eventId] = append(values, webhook)
        }
    } else {

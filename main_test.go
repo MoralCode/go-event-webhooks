@@ -4,6 +4,12 @@ import "testing"
 
 func TestRegisterWebhook(t *testing.T) {
 
+
+    testWebhook2 := Webhook{
+        "https://example.com/2",
+        "POST",
+    }
+
     /* create a map*/
     activeWebhooks := make(Registry)
 
@@ -26,10 +32,6 @@ func TestRegisterWebhook(t *testing.T) {
 
     })
     t.Run("Add To Existing Category", func(t *testing.T) {
-        testWebhook2 := Webhook{
-            "https://example.com/2",
-            "POST",
-        }
 
         registerWebhook(activeWebhooks, "test", testWebhook2)
 
@@ -54,6 +56,21 @@ func TestRegisterWebhook(t *testing.T) {
             t.Errorf("incorrect number of webhooks present for event id \"test\"")
         }
     })
+    t.Run("Duplicate Webhook", func(t *testing.T) {
+    
+        registerWebhook(activeWebhooks, "test", testWebhook2)
+
+        if len(activeWebhooks) != 1 {
+            t.Errorf("incorrect modifications to event identifers are present")
+        }
+
+        if len(activeWebhooks["test"]) != 2 {
+            t.Errorf("incorrect number of webhooks present for event id \"test\"")
+        }
+    })
+}
+
+
 func TestFindIndexInList(t *testing.T) {
 
     testWebhook3 := Webhook{
