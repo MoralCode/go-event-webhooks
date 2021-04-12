@@ -18,3 +18,5 @@
 # project-specific compiled binaries
 event-webhooks
 
+## coverage reports
+coverage.html
