@@ -160,3 +160,66 @@ func TestFindIndexInRegistry(t *testing.T) {
     })
 
 }
+
+
+func TestRemove(t *testing.T) {
+
+   testWebhook := Webhook{
+        "https://example.com",
+        "POST",
+    }
+
+    testWebhook2 := Webhook{
+        "https://example.com/2",
+        "POST",
+    }
+
+    testWebhook3 := Webhook{
+        "https://example.com/test",
+        "POST",
+    }
+
+    testWebhook4 := Webhook{
+        "https://example.com/test4",
+        "POST",
+    }
+    /* create a map*/
+    activeWebhooks := make(Registry)
+
+    activeWebhooks["test"] = []Webhook{testWebhook, testWebhook2}
+
+    t.Run("Remove Negative index", func(t *testing.T) {
+
+        result, err := remove(activeWebhooks["test"], -1)
+    
+        if err == nil {
+            t.Errorf("does not handle negative indices")
+        }
+    })
+
+    t.Run("Remove out of bounds index", func(t *testing.T) {
+
+        result, err := remove(activeWebhooks["test"], len(activeWebhooks["test"])+2)
+    
+        if err == nil {
+            t.Errorf("does not handle out of bounds indices")
+        }
+
+    })
+
+    t.Run("Remove last item", func(t *testing.T) {
+        result, err := remove(activeWebhooks["test"], len(activeWebhooks["test"])-1)
+    
+        if (err != nil || result != []Webhook{testWebhook}) {
+            t.Errorf("does not handle the special case for removing the last item")
+        }
+    })
+
+    t.Run("Remove another item from the list", func(t *testing.T) {
+        result, err := remove(activeWebhooks["test"], 0)
+    
+        if (err != nil || result != []Webhook{testWebhook2}) {
+            t.Errorf("does not correctly remove items in the general case")
+        }
+    })
+}
