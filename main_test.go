@@ -174,15 +174,6 @@ func TestRemove(t *testing.T) {
         "POST",
     }
 
-    // testWebhook3 := Webhook{
-    //     "https://example.com/test",
-    //     "POST",
-    // }
-
-    // testWebhook4 := Webhook{
-    //     "https://example.com/test4",
-    //     "POST",
-    // }
     /* create a map*/
     activeWebhooks := make(Registry)
 
@@ -220,6 +211,51 @@ func TestRemove(t *testing.T) {
     
         if (err != nil || result[0] != testWebhook2) {
             t.Errorf("does not correctly remove items in the general case")
+        }
+    })
+}
+
+func TestDeregister(t *testing.T) {
+
+    testWebhook := Webhook{
+        "https://example.com",
+        "POST",
+    }
+
+    testWebhook2 := Webhook{
+        "https://example.com/2",
+        "POST",
+    }
+
+    testWebhook3 := Webhook{
+        "https://example.com/test",
+        "POST",
+    }
+
+    testWebhook4 := Webhook{
+        "https://example.com/test4",
+        "POST",
+    }
+
+    /* create a map*/
+    activeWebhooks := make(Registry)
+
+    activeWebhooks["test"] = []Webhook{testWebhook, testWebhook2}
+    activeWebhooks["test2"] = []Webhook{testWebhook3, testWebhook4}
+
+    t.Run("Deregisters Webhook from wrong event", func(t *testing.T) {
+        err := deregisterWebhook(activeWebhooks, "test2", testWebhook)
+
+        if err == nil {
+             t.Errorf("does not correctly check if webhook exists in the provided eventId before removing")
+        }
+    })
+
+    t.Run("Deregisters Webhook", func(t *testing.T) {
+        err := deregisterWebhook(activeWebhooks, "test", testWebhook)
+
+        if (err != nil || activeWebhooks["test"][0] != testWebhook2) {
+             t.Errorf("does not correctly remove webhook from registry")
         }
     })
 }

@@ -90,6 +90,23 @@ func registerWebhook(registry Registry, eventId string, webhook Webhook) {
    }
 }
 
+func deregisterWebhook(registry Registry, eventId string, webhook Webhook) (error) {
+
+    index := findIndexInList(registry[eventId], webhook)
+
+    if index == -1 {
+        return errors.New("provided webhook is not present in the registry for the given event ID")
+    }
+
+    newlist, err := remove(registry[eventId], index)
+    if err != nil {
+        return err
+    }
+
+    registry[eventId] = newlist
+    return nil
+}
+
 // inspired by: https://stackoverflow.com/a/37335777/
 func remove(list []Webhook, index int) ([]Webhook, error) {
     if index < 0 {
