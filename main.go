@@ -79,7 +79,9 @@ func registerWebhook(registry Registry, eventId string, webhook Webhook) {
     values, ok := registry[eventId]   
    /* if ok is true, entry is present otherwise entry is absent*/
    if (ok) {
-        registry[eventId] = append(values, webhook)
+       if (webhook != Webhook{}) {
+            registry[eventId] = append(values, webhook)
+       }
    } else {
         // before the loop
         output := []Webhook{}
