@@ -89,3 +89,23 @@ func registerWebhook(registry Registry, eventId string, webhook Webhook) {
         registry[eventId] = output
    }
 }
+
+func findIndexInList(list []Webhook, webhook Webhook) (int) {
+    for i, n := range list {
+        if webhook == n {
+            return i
+        }
+    }
+    return -1
+}
+
+func findIndexInRegistry(registry Registry, webhook Webhook) (string, int) {
+    for key, _ := range registry {
+        index := findIndexInList(registry[key], webhook)
+
+        if index != -1 {
+            return key, index
+        }
+    }
+    return "", -1
+}
