@@ -174,15 +174,15 @@ func TestRemove(t *testing.T) {
         "POST",
     }
 
-    testWebhook3 := Webhook{
-        "https://example.com/test",
-        "POST",
-    }
+    // testWebhook3 := Webhook{
+    //     "https://example.com/test",
+    //     "POST",
+    // }
 
-    testWebhook4 := Webhook{
-        "https://example.com/test4",
-        "POST",
-    }
+    // testWebhook4 := Webhook{
+    //     "https://example.com/test4",
+    //     "POST",
+    // }
     /* create a map*/
     activeWebhooks := make(Registry)
 
@@ -190,7 +190,7 @@ func TestRemove(t *testing.T) {
 
     t.Run("Remove Negative index", func(t *testing.T) {
 
-        result, err := remove(activeWebhooks["test"], -1)
+        _, err := remove(activeWebhooks["test"], -1)
     
         if err == nil {
             t.Errorf("does not handle negative indices")
@@ -199,7 +199,7 @@ func TestRemove(t *testing.T) {
 
     t.Run("Remove out of bounds index", func(t *testing.T) {
 
-        result, err := remove(activeWebhooks["test"], len(activeWebhooks["test"])+2)
+        _, err := remove(activeWebhooks["test"], len(activeWebhooks["test"])+2)
     
         if err == nil {
             t.Errorf("does not handle out of bounds indices")
@@ -210,7 +210,7 @@ func TestRemove(t *testing.T) {
     t.Run("Remove last item", func(t *testing.T) {
         result, err := remove(activeWebhooks["test"], len(activeWebhooks["test"])-1)
     
-        if (err != nil || result != []Webhook{testWebhook}) {
+        if (err != nil || result[0] != testWebhook) {
             t.Errorf("does not handle the special case for removing the last item")
         }
     })
@@ -218,7 +218,7 @@ func TestRemove(t *testing.T) {
     t.Run("Remove another item from the list", func(t *testing.T) {
         result, err := remove(activeWebhooks["test"], 0)
     
-        if (err != nil || result != []Webhook{testWebhook2}) {
+        if (err != nil || result[0] != testWebhook2) {
             t.Errorf("does not correctly remove items in the general case")
         }
     })
