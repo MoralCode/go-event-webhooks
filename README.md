@@ -23,7 +23,9 @@ run tests and gen coverage file
 `go build .`
 
 
+## How does it work?
 
+The go-event-webhooks module allows apps to easily create "events" identified by a string. These event identifiers allow webhooks to be associated with that event, allowing the application to easily trigger webhooks with an event ID and webhook body.  
 
 ## TODO
 - [ ] write unit tests
