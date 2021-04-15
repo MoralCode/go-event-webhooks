@@ -5,12 +5,9 @@ import "net/http"
 import "strings"
 import "errors"
 
-type Webhook struct {
-    url string;
-    httpMethod string;
-}
+import "github.com/MoralCode/go-event-webhooks/models"
 
-type Registry map[string][]Webhook
+type Registry map[string][]models.Webhook
 
 var activeWebhooks Registry
 
@@ -21,13 +18,13 @@ func main() {
     activeWebhooks = make(Registry)
 
     // fmt.Println(sayHi("Marco"))
-    webhook := Webhook{
+    webhook := models.Webhook{
         "https://webhook.site/57663b0a-12b8-4f6d-a875-c38d30803561",
         "POST",
     }
     registerWebhook(activeWebhooks, "test", webhook)
 
-    webhook2 := Webhook{
+    webhook2 := models.Webhook{
         "https://webhook.site/57663b0a-12b8-4f6d-a875-c38d30803561",
         "GET",
     }
@@ -55,7 +52,7 @@ func triggerWebhook(registry Registry, eventId string, body string) (error) {
 }
 
 
-func sendWebhook(webhook Webhook, body string) {
+func sendWebhook(webhook models.Webhook, body string) {
     client := &http.Client{
         // CheckRedirect: redirectPolicyFunc,
     }
@@ -75,22 +72,22 @@ func sendWebhook(webhook Webhook, body string) {
     // http.NewRequest("POST", url, strings.NewReader(form.Encode()))
 }
 
-func registerWebhook(registry Registry, eventId string, webhook Webhook) {
+func registerWebhook(registry Registry, eventId string, webhook models.Webhook) {
     values, ok := registry[eventId]   
    /* if ok is true, entry is present otherwise entry is absent*/
    if (ok) {
-       if (webhook != Webhook{} && findIndexInList(values, webhook) == -1) {
+       if (webhook != models.Webhook{} && findIndexInList(values, webhook) == -1) {
             registry[eventId] = append(values, webhook)
        }
    } else {
         // before the loop
-        output := []Webhook{}
+        output := []models.Webhook{}
         output = append(output, webhook)
         registry[eventId] = output
    }
 }
 
-func deregisterWebhook(registry Registry, eventId string, webhook Webhook) (error) {
+func deregisterWebhook(registry Registry, eventId string, webhook models.Webhook) (error) {
 
     index := findIndexInList(registry[eventId], webhook)
 
@@ -108,7 +105,7 @@ func deregisterWebhook(registry Registry, eventId string, webhook Webhook) (erro
 }
 
 // inspired by: https://stackoverflow.com/a/37335777/
-func remove(list []Webhook, index int) ([]Webhook, error) {
+func remove(list []models.Webhook, index int) ([]models.Webhook, error) {
     if index < 0 {
         return list, errors.New("negative indices are not allowed")
     }
@@ -129,7 +126,7 @@ func remove(list []Webhook, index int) ([]Webhook, error) {
     return list[:len(list)-1], nil
 }
 
-func findIndexInList(list []Webhook, webhook Webhook) (int) {
+func findIndexInList(list []models.Webhook, webhook models.Webhook) (int) {
     for i, n := range list {
         if webhook == n {
             return i
@@ -138,7 +135,7 @@ func findIndexInList(list []Webhook, webhook Webhook) (int) {
     return -1
 }
 
-func findIndexInRegistry(registry Registry, webhook Webhook) (string, int) {
+func findIndexInRegistry(registry Registry, webhook models.Webhook) (string, int) {
     for key, _ := range registry {
         index := findIndexInList(registry[key], webhook)
 
