@@ -36,20 +36,20 @@ func (m_registry MapRegistry) AddToEvent(webhook models.Webhook, eventId string)
 }
 
 func (m_registry MapRegistry) RemoveFromEvent(webhook models.Webhook, eventId string) (error) {
-        index := m_registry[eventId].findIndexOf(webhook)
+    index := m_registry[eventId].findIndexOf(webhook)
 
-        if index == -1 {
-            return errors.New("provided webhook is not present in the registry for the given event ID")
-        }
-
-        newlist, err := m_registry[eventId].removeIndex(index)
-        if err != nil {
-            return err
-        }
-
-        m_registry[eventId] = newlist
-        return nil
+    if index == -1 {
+        return errors.New("provided webhook is not present in the registry for the given event ID")
     }
+
+    newlist, err := m_registry[eventId].removeIndex(index)
+    if err != nil {
+        return err
+    }
+
+    m_registry[eventId] = newlist
+    return nil
+}
 
 // inspired by: https://stackoverflow.com/a/37335777/
 func (list Webhooks) removeIndex(index int) (Webhooks, error) {
