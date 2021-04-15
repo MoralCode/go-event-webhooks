@@ -89,8 +89,13 @@ func (m_registry MapRegistry) Find(webhook models.Webhook) (string, int) {
 }
 
 func (m_registry MapRegistry) FindInEvent(eventId string, webhook models.Webhook) (int, error) {
+   return m_registry[eventId].findIndexOf(webhook), nil
 }
 
 func (m_registry MapRegistry) ListEvents() ([]string) {
-
+    keys := make([]string, 0, len(m_registry))
+    for k := range m_registry {
+        keys = append(keys, k)
+    }
+    return keys
 }
