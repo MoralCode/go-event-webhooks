@@ -15,13 +15,16 @@ func CreateMapRegistry() (MapRegistry) {
 }
 
 
-func (m_registry MapRegistry) AddToEvent(webhook models.Webhook, eventId string) {
+func (m_registry MapRegistry) AddToEvent(webhook models.Webhook, eventId string) (error) {
     values, ok := m_registry[eventId]   
     /* if ok is true, entry is present otherwise entry is absent*/
     if (ok) {
-        //TODO: err if exists already?
-        if (webhook != models.Webhook{} && values.findIndexOf(webhook) == -1) {
-                m_registry[eventId] = append(values, webhook)
+        if (webhook == models.Webhook{}) {
+            return errors.New("Webhook cannot be empty")
+        } else if (values.findIndexOf(webhook) != -1) {
+             return errors.New("Webhook already exists for this eventId")
+        } else {
+            m_registry[eventId] = append(values, webhook)
         }
     } else {
         // before the loop
@@ -29,6 +32,7 @@ func (m_registry MapRegistry) AddToEvent(webhook models.Webhook, eventId string)
         output = append(output, webhook)
         m_registry[eventId] = output
     }
+    return nil
 }
 
 func (m_registry MapRegistry) RemoveFromEvent(webhook models.Webhook, eventId string) (error) {
