@@ -8,7 +8,7 @@ type MapRegistry map[string]Webhooks
 
 
 /* implement interface methods*/
-func CreateMapRegistry() [MapRegistry] {
+func CreateMapRegistry() (MapRegistry) {
     /* method implementation */
     return MapRegistry{}
 }
@@ -47,7 +47,7 @@ func (m_registry MapRegistry) RemoveFromEvent(webhook models.Webhook, eventId st
     }
 
 // inspired by: https://stackoverflow.com/a/37335777/
-func func (m_registry MapRegistry(list Webhooks) removeIndex(index int) (Webhooks, error) {
+func (list Webhooks) removeIndex(index int) (Webhooks, error) {
     if index < 0 {
         return list, errors.New("negative indices are not allowed")
     }
