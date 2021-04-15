@@ -6,43 +6,45 @@ import "strings"
 import "errors"
 
 import "github.com/MoralCode/go-event-webhooks/models"
+import "github.com/MoralCode/go-event-webhooks/registries"
 
-type Registry map[string][]models.Webhook
 
-var activeWebhooks Registry
+var activeWebhooks registries.MapRegistry
 
 
 func main() {
 
     /* create a map*/
-    activeWebhooks = make(Registry)
+    activeWebhooks = registries.CreateMapRegistry()
 
     // fmt.Println(sayHi("Marco"))
     webhook := models.Webhook{
         "https://webhook.site/57663b0a-12b8-4f6d-a875-c38d30803561",
         "POST",
     }
-    registerWebhook(activeWebhooks, "test", webhook)
+    activeWebhooks.AddToEvent(webhook, "test")
 
     webhook2 := models.Webhook{
         "https://webhook.site/57663b0a-12b8-4f6d-a875-c38d30803561",
         "GET",
     }
-    registerWebhook(activeWebhooks, "test", webhook2)
+    activeWebhooks.AddToEvent(webhook2, "test")
 
-    err := triggerWebhook(activeWebhooks, "test", "this is a test")
+    err := TriggerEvent(activeWebhooks, "test", "this is a test")
     if err != nil {
         fmt.Println(err)
     }
 }
 
-func triggerWebhook(registry Registry, eventId string, body string) (error) {
+// triggerevent
 
-    eventWebhooks, ok := registry[eventId]
-    if (ok) {
+func TriggerEvent(registry registries.Registry, eventId string, body string) (error) {
+
+    eventWebhooks := registry.GetHooksForEvent(eventId)
+    if (eventWebhooks != nil) {
         for _, hook := range eventWebhooks {
             fmt.Println(hook)
-            sendWebhook(hook, body)
+            SendWebhook(registry, hook, body)
         }
         return nil
     } else {
@@ -52,14 +54,14 @@ func triggerWebhook(registry Registry, eventId string, body string) (error) {
 }
 
 
-func sendWebhook(webhook models.Webhook, body string) {
+func SendWebhook(registry registries.Registry, webhook models.Webhook, body string) {
     client := &http.Client{
         // CheckRedirect: redirectPolicyFunc,
     }
 
 
     // https://golang.org/pkg/net/http/#Client.Post
-    req, err := http.NewRequest(webhook.httpMethod,webhook.url, strings.NewReader(body))//"application/json",
+    req, err := http.NewRequest(webhook.HttpMethod, webhook.Url, strings.NewReader(body))//"application/json",
     if err != nil {
         // handle error
         fmt.Println(err)
@@ -70,36 +72,4 @@ func sendWebhook(webhook models.Webhook, body string) {
         fmt.Println(err)
     }
     // http.NewRequest("POST", url, strings.NewReader(form.Encode()))
-}
-
-func registerWebhook(registry Registry, eventId string, webhook models.Webhook) {
-    values, ok := registry[eventId]   
-   /* if ok is true, entry is present otherwise entry is absent*/
-   if (ok) {
-       if (webhook != models.Webhook{} && findIndexInList(values, webhook) == -1) {
-            registry[eventId] = append(values, webhook)
-       }
-   } else {
-        // before the loop
-        output := []models.Webhook{}
-        output = append(output, webhook)
-        registry[eventId] = output
-   }
-}
-
-func deregisterWebhook(registry Registry, eventId string, webhook models.Webhook) (error) {
-
-    index := findIndexInList(registry[eventId], webhook)
-
-    if index == -1 {
-        return errors.New("provided webhook is not present in the registry for the given event ID")
-    }
-
-    newlist, err := remove(registry[eventId], index)
-    if err != nil {
-        return err
-    }
-
-    registry[eventId] = newlist
-    return nil
 }
