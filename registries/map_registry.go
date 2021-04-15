@@ -1,6 +1,7 @@
 package registries
 
 import "github.com/MoralCode/go-event-webhooks/models"
+import "errors"
 
 type Webhooks []models.Webhook
 
@@ -19,7 +20,7 @@ func (m_registry MapRegistry) AddToEvent(webhook models.Webhook, eventId string)
     /* if ok is true, entry is present otherwise entry is absent*/
     if (ok) {
         //TODO: err if exists already?
-        if (webhook != models.Webhook{} && findIndexInList(values, webhook) == -1) {
+        if (webhook != models.Webhook{} && values.findIndexOf(webhook) == -1) {
                 m_registry[eventId] = append(values, webhook)
         }
     } else {
@@ -30,19 +31,19 @@ func (m_registry MapRegistry) AddToEvent(webhook models.Webhook, eventId string)
     }
 }
 
-func (m_registry MapRegistry) RemoveFromEvent(webhook models.Webhook, eventId string) {
-        index := findIndexInList(registry[eventId], webhook)
+func (m_registry MapRegistry) RemoveFromEvent(webhook models.Webhook, eventId string) (error) {
+        index := m_registry[eventId].findIndexOf(webhook)
 
         if index == -1 {
             return errors.New("provided webhook is not present in the registry for the given event ID")
         }
 
-        newlist, err := registry[eventId].removeIndex(index)
+        newlist, err := m_registry[eventId].removeIndex(index)
         if err != nil {
             return err
         }
 
-        registry[eventId] = newlist
+        m_registry[eventId] = newlist
         return nil
     }
 
