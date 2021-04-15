@@ -51,6 +51,10 @@ func (m_registry MapRegistry) RemoveFromEvent(webhook models.Webhook, eventId st
     return nil
 }
 
+func (m_registry MapRegistry) GetHooksForEvent(eventId string) ([]models.Webhook) {
+    return m_registry[eventId]
+}
+
 // inspired by: https://stackoverflow.com/a/37335777/
 func (list Webhooks) removeIndex(index int) (Webhooks, error) {
     if index < 0 {
