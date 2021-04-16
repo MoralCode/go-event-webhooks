@@ -25,11 +25,24 @@ func CreateJSONRegistryFromMapRegistry(mapregistry MapRegistry) (JSONRegistry) {
 }
 
 func CreateJSONRegistryFromJSONFile(filename string) (JSONRegistry) {
-    map_registry := readFromDisk(filename)
+    data := readFromDisk(filename)
 
-    registry := CreateJSONRegistryFromMapRegistry(map_registry)
+    registry := CreateJSONRegistryFromJSONData(data)
     registry.FilePath = filename
     return registry
+}
+
+func CreateJSONRegistryFromJSONData(data string) (JSONRegistry) {
+
+    var result MapRegistry
+
+    jsonErr := json.Unmarshal([]byte(data), &result)
+
+    if jsonErr != nil {
+        log.Fatal(jsonErr)
+    }
+
+    return CreateJSONRegistryFromMapRegistry(result)
 }
 
 
@@ -94,7 +107,7 @@ func (j_registry JSONRegistry) writeToDisk() (error) {
     return nil
 }
 
-func readFromDisk(filename string) (MapRegistry) {
+func readFromDisk(filename string) (string) {
 
     file, err := os.Open(filename)
     if err != nil {
@@ -109,15 +122,8 @@ func readFromDisk(filename string) (MapRegistry) {
         log.Fatal(err)
     }
 
-    var result MapRegistry
-
-    jsonErr := json.Unmarshal(data, &result)
-
-    if jsonErr != nil {
-        log.Fatal(jsonErr)
-    }
-
-    return result
+   
+    return string(data)
 
 }
 
