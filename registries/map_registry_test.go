@@ -5,7 +5,7 @@ import "testing"
 import "github.com/MoralCode/go-event-webhooks/models"
 
 
-func TestRegisterWebhook(t *testing.T) {
+func TestMapRegisterWebhook(t *testing.T) {
 
 
     testWebhook2 := models.Webhook{
@@ -74,7 +74,7 @@ func TestRegisterWebhook(t *testing.T) {
 }
 
 
-func TestFindIndexInList(t *testing.T) {
+func TestMapFindIndexInList(t *testing.T) {
 
     testWebhook3 := models.Webhook{
         "https://example.com/test",
@@ -107,7 +107,7 @@ func TestFindIndexInList(t *testing.T) {
 }
 
 
-func TestFindIndexInRegistry(t *testing.T) {
+func TestMapFindIndexInRegistry(t *testing.T) {
     testWebhook := models.Webhook{
         "https://example.com",
         "POST",
@@ -165,7 +165,7 @@ func TestFindIndexInRegistry(t *testing.T) {
 }
 
 
-func TestRemove(t *testing.T) {
+func TestMapRemove(t *testing.T) {
 
    testWebhook := models.Webhook{
         "https://example.com",
@@ -218,7 +218,7 @@ func TestRemove(t *testing.T) {
     })
 }
 
-func TestDeregister(t *testing.T) {
+func TestMapDeregister(t *testing.T) {
 
     testWebhook := models.Webhook{
         "https://example.com",
