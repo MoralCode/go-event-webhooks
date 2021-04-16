@@ -21,7 +21,7 @@ func (m_registry MapRegistry) AddToEvent(webhook models.Webhook, eventId string)
     if (ok) {
         if (webhook == models.Webhook{}) {
             return errors.New("Webhook cannot be empty")
-        } else if (values.findIndexOf(webhook) != -1) {
+        } else if (values.FindIndexOf(webhook) != -1) {
              return errors.New("Webhook already exists for this eventId")
         } else {
             m_registry[eventId] = append(values, webhook)
@@ -36,13 +36,13 @@ func (m_registry MapRegistry) AddToEvent(webhook models.Webhook, eventId string)
 }
 
 func (m_registry MapRegistry) RemoveFromEvent(webhook models.Webhook, eventId string) (error) {
-    index := m_registry[eventId].findIndexOf(webhook)
+    index := m_registry[eventId].FindIndexOf(webhook)
 
     if index == -1 {
         return errors.New("provided webhook is not present in the registry for the given event ID")
     }
 
-    newlist, err := m_registry[eventId].removeIndex(index)
+    newlist, err := m_registry[eventId].RemoveIndex(index)
     if err != nil {
         return err
     }
@@ -55,40 +55,10 @@ func (m_registry MapRegistry) GetHooksForEvent(eventId string) ([]models.Webhook
     return m_registry[eventId]
 }
 
-// inspired by: https://stackoverflow.com/a/37335777/
-func (list models.Webhooks) removeIndex(index int) (models.Webhooks, error) {
-    if index < 0 {
-        return list, errors.New("negative indices are not allowed")
-    }
-    
-    if (index >= len(list)) {
-        return list, errors.New("provided index exceeds the bounds of the provided list ")
-    }
-
-    if (index == len(list)-1) {
-        //if the item to remove is the last one, just return all but the last item
-        return list[:len(list)-1], nil
-    }
-
-    //otherwise replace the item to be removed with the last item
-
-    list[index] = list[len(list)-1]
-    // We do not need to put s[i] at the end, as it will be discarded anyway
-    return list[:len(list)-1], nil
-}
-
-func (list models.Webhooks) findIndexOf(webhook models.Webhook) (int) {
-    for i, n := range list {
-        if webhook == n {
-            return i
-        }
-    }
-    return -1
-}
 
 func (m_registry MapRegistry) Find(webhook models.Webhook) (string, int) {
     for key, _ := range m_registry {
-        index := m_registry[key].findIndexOf(webhook)
+        index := m_registry[key].FindIndexOf(webhook)
 
         if index != -1 {
             return key, index
@@ -98,7 +68,7 @@ func (m_registry MapRegistry) Find(webhook models.Webhook) (string, int) {
 }
 
 func (m_registry MapRegistry) FindInEvent(eventId string, webhook models.Webhook) (int, error) {
-   return m_registry[eventId].findIndexOf(webhook), nil
+   return m_registry[eventId].FindIndexOf(webhook), nil
 }
 
 func (m_registry MapRegistry) ListEvents() ([]string) {

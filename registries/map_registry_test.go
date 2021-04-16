@@ -84,7 +84,7 @@ func TestMapFindIndexInList(t *testing.T) {
     t.Run("Find in Empty List", func(t *testing.T) {
         list := Webhooks{}
 
-        result := list.findIndexOf(testWebhook3)
+        result := list.FindIndexOf(testWebhook3)
         expected := -1
 
         if result != expected {
@@ -95,7 +95,7 @@ func TestMapFindIndexInList(t *testing.T) {
     t.Run("Find in list", func(t *testing.T) {
         list2 := Webhooks{testWebhook3}
 
-        result := list2.findIndexOf(testWebhook3)
+        result := list2.FindIndexOf(testWebhook3)
         expected := 0
 
         if result != expected {
@@ -184,7 +184,7 @@ func TestMapRemove(t *testing.T) {
 
     t.Run("Remove Negative index", func(t *testing.T) {
 
-        _, err := activeWebhooks["test"].removeIndex(-1)
+        _, err := activeWebhooks["test"].RemoveIndex(-1)
     
         if err == nil {
             t.Errorf("does not handle negative indices")
@@ -193,7 +193,7 @@ func TestMapRemove(t *testing.T) {
 
     t.Run("Remove out of bounds index", func(t *testing.T) {
 
-        _, err := activeWebhooks["test"].removeIndex(len(activeWebhooks["test"])+2)
+        _, err := activeWebhooks["test"].RemoveIndex(len(activeWebhooks["test"])+2)
     
         if err == nil {
             t.Errorf("does not handle out of bounds indices")
@@ -202,7 +202,7 @@ func TestMapRemove(t *testing.T) {
     })
 
     t.Run("Remove last item", func(t *testing.T) {
-        result, err := activeWebhooks["test"].removeIndex(len(activeWebhooks["test"])-1)
+        result, err := activeWebhooks["test"].RemoveIndex(len(activeWebhooks["test"])-1)
     
         if (err != nil || result[0] != testWebhook) {
             t.Errorf("does not handle the special case for removing the last item")
@@ -210,7 +210,7 @@ func TestMapRemove(t *testing.T) {
     })
 
     t.Run("Remove another item from the list", func(t *testing.T) {
-        result, err := activeWebhooks["test"].removeIndex(0)
+        result, err := activeWebhooks["test"].RemoveIndex(0)
     
         if (err != nil || result[0] != testWebhook2) {
             t.Errorf("does not correctly remove items in the general case")
