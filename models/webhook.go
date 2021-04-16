@@ -1,6 +1,6 @@
 package models
 
 type Webhook struct {
-    Url string;
-    HttpMethod string;
+    Url string;         `json:"url"`
+    HttpMethod string;  `json:"httpMethod"`
 }
