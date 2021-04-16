@@ -10,8 +10,8 @@ func TestMakeJsonRegistry(t *testing.T) {
 
     t.Run("Create New Registry", func(t *testing.T) {
         /* create a map*/
-        jsonRegistry := CreateNewJSONRegistry("testfile.json")
-        expected := JSONRegistry{MapRegistry{}, "testfile.json"}
+        jsonRegistry := CreateNewJSONRegistry("")
+        expected := JSONRegistry{MapRegistry{}, ""}
 
         if diff := deep.Equal(jsonRegistry, expected); diff != nil {
             t.Error(diff)
