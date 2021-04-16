@@ -6,18 +6,46 @@ import "github.com/MoralCode/go-event-webhooks/models"
 import "github.com/go-test/deep"
 
 
-func TestMakeNewJsonRegistery(t *testing.T) {
-    /* create a map*/
-    jsonRegistry := CreateNewJSONRegistry("testfile.json")
-    expected := JSONRegistry{MapRegistry{}, "testfile.json"}
+func TestMakeJsonRegistry(t *testing.T) {
 
-    if diff := deep.Equal(jsonRegistry, expected); diff != nil {
-		t.Error(diff)
-	}
+    t.Run("Create New Registry", func(t *testing.T) {
+        /* create a map*/
+        jsonRegistry := CreateNewJSONRegistry("testfile.json")
+        expected := JSONRegistry{MapRegistry{}, "testfile.json"}
 
-     if len(jsonRegistry.Registry) != 0{
-        t.Errorf("Registry does not begin in an empty state")
-    }
+        if diff := deep.Equal(jsonRegistry, expected); diff != nil {
+            t.Error(diff)
+        }
+
+        if len(jsonRegistry.Registry) != 0 {
+            t.Errorf("Registry does not begin in an empty state")
+        }
+    })
+
+    t.Run("Create Registry from JSON String", func(t *testing.T) {
+        
+        testWebhook := models.Webhook{
+            "https://example.com",
+            "POST",
+        }
+
+        testWebhook2 := models.Webhook{
+            "https://example.com/2",
+            "POST",
+        }
+        mapreg := make(MapRegistry)
+        mapreg["test"] = models.Webhooks{testWebhook, testWebhook2}
+
+        data := "{\"test\":[{\"url\":\"https://example.com\",\"httpMethod\":\"POST\"},{\"url\":\"https://example.com/2\",\"httpMethod\":\"POST\"}]}"
+
+        jsonRegistry := CreateJSONRegistryFromJSONData(data)
+        expected := JSONRegistry{mapreg, ""}
+
+        if diff := deep.Equal(jsonRegistry, expected); diff != nil {
+            t.Error(diff)
+        }
+
+    })
 }
 
 func TestJsonRegisterWebhook(t *testing.T) {
