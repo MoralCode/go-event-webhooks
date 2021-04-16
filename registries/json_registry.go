@@ -57,7 +57,7 @@ func (j_registry JSONRegistry) RemoveFromEvent(webhook models.Webhook, eventId s
     return nil
 }
 
-func (j_registry JSONRegistry) GetHooksForEvent(eventId string) ([]models.Webhook) {
+func (j_registry JSONRegistry) GetHooksForEvent(eventId string) (models.Webhooks) {
     return j_registry.Registry.GetHooksForEvent(eventId)
 }
 
