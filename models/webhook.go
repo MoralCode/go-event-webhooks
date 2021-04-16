@@ -10,6 +10,11 @@ type Webhook struct {
 type Webhooks []Webhook
 
 
+func CreateWebhook(url string, httpMethod string) (error) {
+    
+    return Webhook{url, httpMethod}
+}
+
 // inspired by: https://stackoverflow.com/a/37335777/
 func (list Webhooks) RemoveIndex(index int) (Webhooks, error) {
     if index < 0 {
