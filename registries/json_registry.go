@@ -1,8 +1,11 @@
 package registries
 
 import "errors"
+import "github.com/MoralCode/go-event-webhooks/models"
 import "encoding/json"
 import "log"
+import "io/ioutil"
+import "os"
 
 type JSONRegistry struct {
     Registry MapRegistry;
@@ -24,7 +27,7 @@ func CreateJSONRegistryFromMapRegistry(mapregistry MapRegistry) (JSONRegistry) {
 func CreateJSONRegistryFromJSONFile(filename string) (JSONRegistry) {
     map_registry := readFromDisk(filename)
 
-    registry = CreateJSONRegistryFromMapRegistry(map_registry)
+    registry := CreateJSONRegistryFromMapRegistry(map_registry)
     registry.FilePath = filename
     return registry
 }
