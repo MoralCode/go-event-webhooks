@@ -82,7 +82,7 @@ func TestMapFindIndexInList(t *testing.T) {
     }
 
     t.Run("Find in Empty List", func(t *testing.T) {
-        list := Webhooks{}
+        list := models.Webhooks{}
 
         result := list.FindIndexOf(testWebhook3)
         expected := -1
@@ -93,7 +93,7 @@ func TestMapFindIndexInList(t *testing.T) {
     })
 
     t.Run("Find in list", func(t *testing.T) {
-        list2 := Webhooks{testWebhook3}
+        list2 := models.Webhooks{testWebhook3}
 
         result := list2.FindIndexOf(testWebhook3)
         expected := 0
