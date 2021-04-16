@@ -38,9 +38,11 @@ func (j_registry JSONRegistry) AddToEvent(webhook models.Webhook, eventId string
     if err != nil {
         return err
     }
-    err = j_registry.writeToDisk()
-    if err != nil {
-        return err
+    if j_registry.FilePath != "" {
+        err = j_registry.writeToDisk()
+        if err != nil {
+            return err
+        }
     }
     return nil
 }
@@ -50,9 +52,11 @@ func (j_registry JSONRegistry) RemoveFromEvent(webhook models.Webhook, eventId s
     if err != nil {
         return err
     }
-    err = j_registry.writeToDisk()
-    if err != nil {
-        return err
+    if j_registry.FilePath != "" {
+        err = j_registry.writeToDisk()
+        if err != nil {
+            return err
+        }
     }
     return nil
 }
