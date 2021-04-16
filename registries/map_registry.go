@@ -3,9 +3,9 @@ package registries
 import "github.com/MoralCode/go-event-webhooks/models"
 import "errors"
 
-type Webhooks []models.Webhook
 
-type MapRegistry map[string]Webhooks
+
+type MapRegistry map[string]models.Webhooks
 
 
 /* implement interface methods*/
@@ -56,7 +56,7 @@ func (m_registry MapRegistry) GetHooksForEvent(eventId string) ([]models.Webhook
 }
 
 // inspired by: https://stackoverflow.com/a/37335777/
-func (list Webhooks) removeIndex(index int) (Webhooks, error) {
+func (list models.Webhooks) removeIndex(index int) (models.Webhooks, error) {
     if index < 0 {
         return list, errors.New("negative indices are not allowed")
     }
@@ -77,7 +77,7 @@ func (list Webhooks) removeIndex(index int) (Webhooks, error) {
     return list[:len(list)-1], nil
 }
 
-func (list Webhooks) findIndexOf(webhook models.Webhook) (int) {
+func (list models.Webhooks) findIndexOf(webhook models.Webhook) (int) {
     for i, n := range list {
         if webhook == n {
             return i
