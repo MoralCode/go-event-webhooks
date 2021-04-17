@@ -64,6 +64,7 @@ func SendWebhook(webhook models.Webhook, body string) {
         // handle error
         fmt.Println(err)
     }
+    defer resp.Body.Close()
     _, err = client.Do(req)
     if err != nil {
         // handle error
