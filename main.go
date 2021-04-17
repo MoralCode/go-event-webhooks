@@ -36,15 +36,13 @@ func main() {
     }
 }
 
-// triggerevent
-
 func TriggerEvent(registry registries.Registry, eventId string, body string) (error) {
 
     eventWebhooks := registry.GetHooksForEvent(eventId)
     if (eventWebhooks != nil) {
         for _, hook := range eventWebhooks {
             fmt.Println(hook)
-            SendWebhook(registry, hook, body)
+            SendWebhook(hook, body)
         }
         return nil
     } else {
@@ -54,7 +52,7 @@ func TriggerEvent(registry registries.Registry, eventId string, body string) (er
 }
 
 
-func SendWebhook(registry registries.Registry, webhook models.Webhook, body string) {
+func SendWebhook(webhook models.Webhook, body string) {
     client := &http.Client{
         // CheckRedirect: redirectPolicyFunc,
     }
