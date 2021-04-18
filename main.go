@@ -40,7 +40,7 @@ func main() {
     }
 }
 
-func configureClient() {
+func configureClient() HTTPClient {
     return &http.Client{
         // CheckRedirect: redirectPolicyFunc,
     }
