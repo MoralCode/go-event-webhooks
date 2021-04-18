@@ -12,6 +12,7 @@ Below is an example of basic usage
 
 ```go
 import (
+  "github.com/MoralCode/go-event-webhooks"
   "github.com/MoralCode/go-event-webhooks/models"
   "github.com/MoralCode/go-event-webhooks/registries"
   )
@@ -32,7 +33,7 @@ registry.AddToEvent(myWebhook, "file-uploaded")
 
 When an event happens in your program that you would like to send a webhook for, use the `TriggerEvent` method to send a request to all webhooks registered to that event id.
 ```go
-err := TriggerEvent(registry, "test", "this is a test")
+err := go-event-webhooks.TriggerEvent(registry, "test", "this is a test")
 if err != nil {
     fmt.Println(err)
 }
