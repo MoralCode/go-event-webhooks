@@ -57,7 +57,7 @@ func TestJsonRegisterWebhook(t *testing.T) {
     }
 
     /* create a map*/
-    activeWebhooks := CreateNewJSONRegistry("testfile.json")
+    activeWebhooks := CreateNewJSONRegistry("")
 
     t.Run("CreatesCategory", func(t *testing.T) {
         testWebhook := models.Webhook{
