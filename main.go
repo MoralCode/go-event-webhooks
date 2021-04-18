@@ -70,14 +70,14 @@ func SendWebhook(client HTTPClient, webhook models.Webhook, body string) (*http.
     if err != nil {
         // handle error
         fmt.Println(err)
-        return nil, err
+        return &http.Response{}, err
     }
     defer resp.Body.Close()
     response, err = client.Do(req)
     if err != nil {
         // handle error
         fmt.Println(err)
-        return nil, err
+        return &http.Response{}, err
     }
 
     return response, nil
