@@ -53,8 +53,12 @@ Since registries are just simple data storage, it's possible to write a registry
 ### MapRegistry
 This registry stores webhooks using a map structure where each event id stores a list of webhooks. This is a simple in-memory storage solution and is the most basic type of registry.
 
+MapRegistries can be created by calling `CreateMapRegistry()` from the `registries` package
+
 ### JSONRegistry
 The JSONRegistry builds on top of a MapRegistry to allow a registry to be stored and re-created from a JSON file.
+
+JSONRegistries can be created by calling `CreateNewJSONRegistry(filename)` from the `registries` package. `CreateJSONRegistryFromMapRegistry`, `CreateJSONRegistryFromJSONData` and `CreateJSONRegistryFromJSONFile` are also available
 
 ### Custom Registries
 Of course, since Registries are just structures that implement the `Registry` interface, you can also create your own registries. This allows for the use of storage backends that are not yet included in this library, such as databases and s3 storage as well as to other file formats like XML or CSV. 
