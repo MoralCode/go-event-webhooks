@@ -10,9 +10,9 @@ type Webhook struct {
 type Webhooks []Webhook
 
 
-func CreateWebhook(url string, httpMethod string) (error) {
+func CreateWebhook(url string, httpMethod string) (Webhook, error) {
     
-    return Webhook{url, httpMethod}
+    return Webhook{url, httpMethod}, nil
 }
 
 // inspired by: https://stackoverflow.com/a/37335777/

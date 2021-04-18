@@ -20,7 +20,10 @@ import (
 registry := registries.CreateNewJSONRegistry("registry.json")
 
 // Create a webhook to add to your registry
-myWebhook := models.CreateWebhook("http://my.website", "GET")
+myWebhook, err := models.CreateWebhook("http://my.website", "GET")
+if err != nil {
+  //an error occured creating the webhook
+}
 
 //Add your webhook to the registry for a particular event id
 registry.AddToEvent(myWebhook, "file-uploaded")
