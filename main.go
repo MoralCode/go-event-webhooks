@@ -40,6 +40,12 @@ func main() {
     }
 }
 
+func configureClient() {
+    return &http.Client{
+        // CheckRedirect: redirectPolicyFunc,
+    }
+}
+
 func TriggerEvent(registry registries.Registry, eventId string, body string) (error) {
 
     eventWebhooks := registry.GetHooksForEvent(eventId)
@@ -55,13 +61,6 @@ func TriggerEvent(registry registries.Registry, eventId string, body string) (er
         return errors.New("no webhooks are registered for the eventId " + eventId)
     }
 }
-
-func configureClient() {
-    return &http.Client{
-        // CheckRedirect: redirectPolicyFunc,
-    }
-}
-
 
 func SendWebhook(client HTTPClient, webhook models.Webhook, body string) (*http.Response, error) {
 
