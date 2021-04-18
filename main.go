@@ -8,36 +8,8 @@ import "errors"
 import "github.com/MoralCode/go-event-webhooks/models"
 import "github.com/MoralCode/go-event-webhooks/registries"
 
-
-var activeWebhooks registries.MapRegistry
-
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
-}
-
-
-func main() {
-
-    /* create a map*/
-    activeWebhooks = registries.CreateMapRegistry()
-
-    // fmt.Println(sayHi("Marco"))
-    webhook := models.Webhook{
-        "https://webhook.site/57663b0a-12b8-4f6d-a875-c38d30803561",
-        "POST",
-    }
-    activeWebhooks.AddToEvent(webhook, "test")
-
-    webhook2 := models.Webhook{
-        "https://webhook.site/57663b0a-12b8-4f6d-a875-c38d30803561",
-        "GET",
-    }
-    activeWebhooks.AddToEvent(webhook2, "test")
-
-    err := TriggerEvent(activeWebhooks, "test", "this is a test")
-    if err != nil {
-        fmt.Println(err)
-    }
 }
 
 func configureClient() HTTPClient {
