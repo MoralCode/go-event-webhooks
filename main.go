@@ -40,9 +40,10 @@ func TriggerEvent(registry registries.Registry, eventId string, body string) (er
 
     eventWebhooks := registry.GetHooksForEvent(eventId)
     if (eventWebhooks != nil) {
+        client := configureClient()
         for _, hook := range eventWebhooks {
             fmt.Println(hook)
-            SendWebhook(hook, body)
+            SendWebhook(client, hook, body)
         }
         return nil
     } else {
@@ -51,13 +52,15 @@ func TriggerEvent(registry registries.Registry, eventId string, body string) (er
     }
 }
 
-
-func SendWebhook(webhook models.Webhook, body string) {
-    client := &http.Client{
+func configureClient() {
+    return &http.Client{
         // CheckRedirect: redirectPolicyFunc,
     }
+}
 
 
+func SendWebhook(client http.Client, webhook models.Webhook, body string) {
+    
     // https://golang.org/pkg/net/http/#Client.Post
     req, err := http.NewRequest(webhook.HttpMethod, webhook.Url, strings.NewReader(body))//"application/json",
     if err != nil {
