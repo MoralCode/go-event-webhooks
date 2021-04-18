@@ -59,19 +59,23 @@ func configureClient() {
 }
 
 
-func SendWebhook(client http.Client, webhook models.Webhook, body string) {
-    
+func SendWebhook(client http.Client, webhook models.Webhook, body string) (http.Response, error) {
+
     // https://golang.org/pkg/net/http/#Client.Post
     req, err := http.NewRequest(webhook.HttpMethod, webhook.Url, strings.NewReader(body))//"application/json",
     if err != nil {
         // handle error
         fmt.Println(err)
+        return nil, err
     }
     defer resp.Body.Close()
-    _, err = client.Do(req)
+    response, err = client.Do(req)
     if err != nil {
         // handle error
         fmt.Println(err)
+        return nil, err
     }
+
+    return response, nil
     // http.NewRequest("POST", url, strings.NewReader(form.Encode()))
 }
