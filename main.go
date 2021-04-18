@@ -11,6 +11,10 @@ import "github.com/MoralCode/go-event-webhooks/registries"
 
 var activeWebhooks registries.MapRegistry
 
+type HTTPClient interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
 
 func main() {
 
@@ -59,7 +63,7 @@ func configureClient() {
 }
 
 
-func SendWebhook(client http.Client, webhook models.Webhook, body string) (http.Response, error) {
+func SendWebhook(client HTTPClient, webhook models.Webhook, body string) (*http.Response, error) {
 
     // https://golang.org/pkg/net/http/#Client.Post
     req, err := http.NewRequest(webhook.HttpMethod, webhook.Url, strings.NewReader(body))//"application/json",
