@@ -1,4 +1,4 @@
-package main
+package eventwebhooks
 
 import "fmt"
 import "net/http"
